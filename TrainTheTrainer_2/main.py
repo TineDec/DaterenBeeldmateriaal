@@ -1,16 +1,7 @@
-# This is a sample Python script.
+from matplotlib import pyplot as plt
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+instellingen = ['IM', 'STAM', 'HvA', 'DMG', 'Archief']
+aantal_records = [5422, 6541, 3846, 4451, 6154]
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+plt.plot(instellingen, aantal_records)
+plt.show()
