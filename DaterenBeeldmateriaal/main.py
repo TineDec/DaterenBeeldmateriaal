@@ -13,13 +13,13 @@ interface.geometry('1000x2000')
 
 titel = Label(interface, text="DATEREN VAN BEELDMATERIAAL")
 titel.configure(bg="#60c1c9", fg="#000000", font=("Calibri",20,"bold"))
-titel.grid(row=1, column=0)
+titel.grid(row=1, column=0, columnspan=2)
 
 #OPTIE 1: op basis van foto-techniek
 #OPTIE 2: op basis van bezienswaardigheden
     #doorzoek thesaurus op vaste woorden
 
-lijst = ['Tine', 'Saar', 'Flore', 'Sarrah', 'a', 'b', 'c', 'd', 'e','f', 'g', 'h']
+lijst = ['Tine', 'Saar', 'Flore', 'Sarrah', 'tram met elect. bovenleidingen', 'paardentram', 'tram met paard', 'tram zonder elec. bovenleiding', 'e','f', 'g', 'h']
 #zorgen dat enkel de zaken nog zichtbaar zijn zodra je een letter intypt (option list dus)
 
 frame = Frame(interface, bg="#60c1c9")
@@ -31,34 +31,34 @@ Label(
     bg="#60c1c9",
     fg="#000000",
     font = ("Calibri",12)
-).grid(row=1, column=0, padx=3, pady=3)
+).grid(row=1, column=1, columnspan=2, pady=20)
 
 entry_1 = AutocompleteEntryListbox(
     frame,
-    width=20,
+    width=25,
     height=10,
-    font=('Times, 8'),
-    completevalues=lijst
+    font=('Calibri, 12'),
+    completevalues=lijst,
 )
-entry_1.grid(row=2, column=0, padx=20, pady=1)
+entry_1.grid(row=2, column=1)
 
 entry_2 = AutocompleteEntryListbox(
     frame,
-    width=20,
+    width=25,
     height=10,
-    font=('Times, 18'),
+    font=('Calibri, 12'),
     completevalues=lijst,
     )
-entry_2.grid(row=2, column=0, ipadx=10, ipady=10)
+entry_2.grid(row=2, column=2)
 
 entry_3 = AutocompleteEntryListbox(
     frame,
-    width=20,
+    width=25,
     height=10,
-    font=('Times, 12'),
+    font=('Calibri, 12'),
     completevalues=lijst
 )
-entry_3.grid(row=2, column=0, padx=200, pady=100)
+entry_3.grid(row=2, column=3)
 
 
 #OPTIE 3: op basis van fotograaf
