@@ -30,7 +30,6 @@ def fillout(e):
     entry_1.delete(0, END)
     entry_1.insert(0, my_list.get(ACTIVE))
 
-
 entry_1 = Entry(interface)
 entry_1.grid(row=1, column=3)
 entry_1.grid()
