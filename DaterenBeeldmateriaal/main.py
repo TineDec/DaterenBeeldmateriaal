@@ -1,18 +1,38 @@
-from tkinter import Listbox
-
-from ttkwidgets.autocomplete import AutocompleteEntryListbox
-from tkinter import *
 import tkinter as tk
+from tkinter import *
+from tkinter import Listbox
 
 interface = tk.Tk()
 interface.configure(bg="#60c1c9")
 interface.geometry('1000x2000')
 
+#kleurcode lichtblauw = #60c1c9
+#kleurcode geel = #fdc20b
+#kleurcode roze = #ea94aa
+#kleurcode groen = #00a57
+
+titel = Label(interface, text="DATEREN VAN BEELDMATERIAAL")
+titel.configure(bg="#60c1c9", fg="#000000", font=("Calibri",20,"bold"))
+titel.grid(row=1, column=0, columnspan=5)
+
+#OPTIE 1: op basis van foto-techniek
+#OPTIE 2: op basis van bezienswaardigheden
+    #doorzoek thesaurus op vaste woorden
+
+lijst = ['Tine', 'Saar', 'Flore', 'Sarrah', 'tram met elect. bovenleidingen', 'paardentram', 'tram met paard', 'tram zonder elec. bovenleiding', 'e','f', 'g', 'h']
+
+Label(
+    text = "Duid hier aan wat te zien is op de foto. Zoektermen moeten in het Nederlands en enkelvoud genoteerd worden.",
+    bg="#60c1c9",
+    fg="#000000",
+    font = ("Calibri",12)
+).grid(row=2, column=1, columnspan=5, pady=20)
+
 def update(data):
-    my_list.delete(0, END)
+    my_list_1.delete(0, END)
 
     for item in data:
-        my_list.insert(END, item)
+        my_list_1.insert(END, item)
 
 def check(e):
     typed = entry_1.get()
@@ -28,63 +48,76 @@ def check(e):
 
 def fillout(e):
     entry_1.delete(0, END)
-    entry_1.insert(0, my_list.get(ACTIVE))
+    entry_1.insert(0, my_list_1.get(ACTIVE))
 
-entry_1 = Entry(interface)
-entry_1.grid(row=1, column=3)
-entry_1.grid()
-my_list: Listbox = Listbox(interface)
-my_list.grid(row=2, column=3)
-my_list.grid()
-
-my_list.bind("<<ListboxSelect>>", fillout)
-
-#kleurcode lichtblauw = #60c1c9
-#kleurcode geel = #fdc20b
-#kleurcode roze = #ea94aa
-#kleurcode groen = #00a57
-
-titel = Label(interface, text="DATEREN VAN BEELDMATERIAAL")
-titel.configure(bg="#60c1c9", fg="#000000", font=("Calibri",20,"bold"))
-titel.grid(row=1, column=0, columnspan=2)
-
-#OPTIE 1: op basis van foto-techniek
-#OPTIE 2: op basis van bezienswaardigheden
-    #doorzoek thesaurus op vaste woorden
-
-lijst = ['Tine', 'Saar', 'Flore', 'Sarrah', 'tram met elect. bovenleidingen', 'paardentram', 'tram met paard', 'tram zonder elec. bovenleiding', 'e','f', 'g', 'h']
-
-#frame = Entry(interface, bg="#60c1c9")
-#frame.grid()
-
-Label(
-    text = "Duid hier aan wat te zien is op de foto. Zoektermen moeten in het Nederlands en enkelvoud genoteerd worden.",
-    bg="#60c1c9",
-    fg="#000000",
-    font = ("Calibri",12)
-).grid(row=1, column=1, columnspan=2, pady=20)
-
+entry_1 = Entry(interface,width=50)
+entry_1.grid(row = 3, column = 1, padx = 5, pady = 5)
+my_list_1: Listbox = Listbox(interface, height=20, width=50)
+my_list_1.grid(row=4, column=1, padx=5, pady=5)
+my_list_1.bind("<<ListboxSelect>>", fillout)
 entry_1.bind('<KeyRelease>', check)
+
+def update_2(data_2):
+    my_list_2.delete(0, END)
+
+    for item in data_2:
+        my_list_2.insert(END, item)
+
+def check_2(e):
+    typed = entry_2.get()
+
+    if typed == '':
+        data_2 = lijst
+    else:
+        data_2 = []
+        for item in lijst:
+            if typed.lower() in item.lower():
+                data_2.append(item)
+    update_2(data_2)
+
+def fillout_2(e):
+    entry_2.delete(0, END)
+    entry_2.insert(0, my_list_2.get(ACTIVE))
+
+entry_2 = Entry(interface, width=50)
+entry_2.grid(row=3, column=3, padx=5, pady=5)
+my_list_2: Listbox = Listbox(interface, height=20, width=50)
+my_list_2.grid(row=4, column=3, padx=5, pady=5)
+my_list_2.bind("<<ListboxSelect>>", fillout_2)
+entry_2.bind('<KeyRelease>', check_2)
+
+def update_3(data_3):
+    my_list_3.delete(0, END)
+
+    for item in data_3:
+        my_list_3.insert(END, item)
+
+def check_3(e):
+    typed = entry_3.get()
+
+    if typed == '':
+        data_3 = lijst
+    else:
+        data_3 = []
+        for item in lijst:
+            if typed.lower() in item.lower():
+                data_3.append(item)
+    update_3(data_3)
+
+def fillout_3(e):
+    entry_3.delete(0, END)
+    entry_3.insert(0, my_list_3.get(ACTIVE))
+
+entry_3 = Entry(interface, width=50)
+entry_3.grid(row=3, column=5, padx=5, pady=5)
+
+my_list_3: Listbox = Listbox(interface, height=20, width=50)
+my_list_3.grid(row=4, column=5, padx=5, pady=5)
+
+my_list_3.bind("<<ListboxSelect>>", fillout_3)
+entry_3.bind('<KeyRelease>', check_3)
+
 update(lijst)
-
-#entry_2 = AutocompleteEntryListbox(
-#   frame,
-#   width=25,
-#   height=10,
-#   font=('Calibri, 12'),
-#   completevalues=lijst,
-#   )
-#entry_2.grid(row=2, column=2)
-
-#entry_3 = AutocompleteEntryListbox(
-#   frame,
-#   width=25,
-#   height=10,
-#   font=('Calibri, 12'),
-#   completevalues=lijst
-#)
-#entry_3.grid(row=2, column=3)
-
 
 #OPTIE 3: op basis van fotograaf
 #OPTIE 4: overige (zoals kartelrand, KIK-nummer bv. B0...)
