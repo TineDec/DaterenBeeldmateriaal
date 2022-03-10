@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import Listbox
+from openpyxl.workbook import Workbook
+from openpyxl import load_workbook
 
 interface = tk.Tk()
 interface.configure(bg="#60c1c9")
@@ -19,7 +21,15 @@ titel.grid(row=1, column=0, columnspan=5)
 #OPTIE 2: op basis van bezienswaardigheden
     #doorzoek thesaurus op vaste woorden
 
-lijst = ['Tine', 'Saar', 'Flore', 'Sarrah', 'tram met elect. bovenleidingen', 'paardentram', 'tram met paard', 'tram zonder elec. bovenleiding', 'e','f', 'g', 'h']
+wb = load_workbook(r"C:\Users\decoseti\Downloads\Gebeurtenissen_Lijst.xlsx")
+ws = wb.active
+
+#grag a column
+col_a = ws['A']
+col_b = ws['B']
+col_d = ws['D']
+
+#lijst = ['Tine', 'Saar', 'Flore', 'Sarrah', 'tram met elect. bovenleidingen', 'paardentram', 'tram met paard', 'tram zonder elec. bovenleiding', 'e','f', 'g', 'h']
 
 Label(
     text = "Duid hier aan wat te zien is op de foto. Zoektermen moeten in het Nederlands en enkelvoud genoteerd worden.",
@@ -32,16 +42,16 @@ def update(data):
     my_list_1.delete(0, END)
 
     for item in data:
-        my_list_1.insert(END, item)
+        my_list_1.insert(END, item.value)
 
 def check(e):
     typed = entry_1.get()
 
     if typed == '':
-        data = lijst
+        data = col_d
     else:
         data = []
-        for item in lijst:
+        for item in col_d:
             if typed.lower() in item.lower():
                 data.append(item)
     update(data)
@@ -51,8 +61,9 @@ def fillout(e):
     entry_1.insert(0, my_list_1.get(ACTIVE))
 
 entry_1 = Entry(interface,width=50)
-entry_1.grid(row = 3, column = 1, padx = 5, pady = 5)
+entry_1.grid(row=3, column=1, padx=5, pady=5)
 my_list_1: Listbox = Listbox(interface, height=20, width=50)
+
 my_list_1.grid(row=4, column=1, padx=5, pady=5)
 my_list_1.bind("<<ListboxSelect>>", fillout)
 entry_1.bind('<KeyRelease>', check)
@@ -61,16 +72,16 @@ def update_2(data_2):
     my_list_2.delete(0, END)
 
     for item in data_2:
-        my_list_2.insert(END, item)
+        my_list_2.insert(END, item.value)
 
 def check_2(e):
     typed = entry_2.get()
 
     if typed == '':
-        data_2 = lijst
+        data_2 = col_d
     else:
         data_2 = []
-        for item in lijst:
+        for item in col_d:
             if typed.lower() in item.lower():
                 data_2.append(item)
     update_2(data_2)
@@ -90,16 +101,16 @@ def update_3(data_3):
     my_list_3.delete(0, END)
 
     for item in data_3:
-        my_list_3.insert(END, item)
+        my_list_3.insert(END, item.value)
 
 def check_3(e):
     typed = entry_3.get()
 
     if typed == '':
-        data_3 = lijst
+        data_3 = col_d
     else:
         data_3 = []
-        for item in lijst:
+        for item in col_d:
             if typed.lower() in item.lower():
                 data_3.append(item)
     update_3(data_3)
@@ -117,7 +128,7 @@ my_list_3.grid(row=4, column=5, padx=5, pady=5)
 my_list_3.bind("<<ListboxSelect>>", fillout_3)
 entry_3.bind('<KeyRelease>', check_3)
 
-update(lijst)
+update(col_d)
 
 #OPTIE 3: op basis van fotograaf
 #OPTIE 4: overige (zoals kartelrand, KIK-nummer bv. B0...)
