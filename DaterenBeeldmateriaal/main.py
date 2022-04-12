@@ -1,35 +1,29 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import Listbox
-from openpyxl.workbook import Workbook
-from openpyxl import load_workbook
 import pandas as pd
 
 interface = tk.Tk()
 interface.configure(bg="#60c1c9")
-interface.geometry('1000x2000')
+interface.geometry('1500x750')
+interface.title('Dateren van beeldmateriaal')
 
 # kleurcode lichtblauw = #60c1c9
 # kleurcode geel = #fdc20b
 # kleurcode roze = #ea94aa
 # kleurcode groen = #00a57e
 
-titel = Label(interface, text="DATEREN VAN BEELDMATERIAAL")
-titel.configure(bg="#60c1c9", fg="#000000", font=("Calibri", 20, "bold"))
-titel.grid(row=1, column=0, columnspan=5)
-
 # OPTIE 1: op basis van foto-techniek
 # OPTIE 2: op basis van bezienswaardigheden
-# doorzoek thesaurus op vaste woorden
+
+titel = Label(interface, text='1. BEZIENSWAARDIGHEDEN')
+titel.configure(bg="#60c1c9", fg="#000000", font=("Calibri", 20, "bold"))
+titel.place(relx=0.15, rely=0, anchor=N)
 
 #TO DO: SCROLLBAR TOEVOEGEN
 #TO DO: ZORGEN DAT TEKST LEESBAAR IS IN TYPVELD (OP TWEE REGELS PLAATSEN?)
 
-#wb = load_workbook(r"C:\Users\decoseti\Downloads\Gebeurtenissen_Lijst.xlsx")
-#wb = load_workbook("Gebeurtenissen_Lijst.xlsx")
-#ws = wb.active
-
-#https://stackoverflow.com/questions/43922356/how-to-read-an-excel-column-into-a-list --> lijst maken van excel d.m.v. pandas?
+#https://stackoverflow.com/questions/43922356/how-to-read-an-excel-column-into-a-list --> lijst maken van excel d.m.v. pandas
 file_name = "Gebeurtenissen_Lijst.xlsx"
 xl_workbook = pd.ExcelFile(file_name)
 df = xl_workbook.parse("Gebeurtenissen")
@@ -40,7 +34,7 @@ Label(
     bg="#60c1c9",
     fg="#000000",
     font=("Calibri", 12)
-).grid(row=2, column=1, columnspan=5, pady=20)
+).place(relx=0.29, rely=0.05, anchor=N)
 
 def update(data):
     my_list_1.delete(0, END)
@@ -64,13 +58,18 @@ def fillout(e):
     entry_1.delete(0, END)
     entry_1.insert(0, my_list_1.get(ACTIVE))
 
-entry_1 = Entry(interface, width=50)
-entry_1.grid(row=3, column=1, padx=5, pady=5)
+entry_1 = Entry(interface, width=53)
+entry_1.place(relx=0.205, rely=0.12, anchor=N)
 entry_1.bind('<KeyRelease>', check)
 
 my_list_1: Listbox = Listbox(interface, height=20, width=50)
-my_list_1.grid(row=4, column=1, padx=5, pady=5)
+my_list_1.place(relx=0.2, rely=0.15, anchor=N)
 my_list_1.bind("<<ListboxSelect>>", fillout)
+
+scrollbar_v = Scrollbar(interface, orient=VERTICAL, command=my_list_1.yview)
+scrollbar_v.place(relx=0.301, rely=0.151, height=324)
+scrollbar_h = Scrollbar(interface, orient=HORIZONTAL, command=my_list_1.xview)
+scrollbar_h.place(relx=0.0985, rely=0.583, width=320.5)
 
 def update_2(data_2):
     my_list_2.delete(0, END)
@@ -94,15 +93,18 @@ def fillout_2(e):
     entry_2.delete(0, END)
     entry_2.insert(0, my_list_2.get(ACTIVE))
 
-
-entry_2 = Entry(interface, width=50)
-entry_2.grid(row=3, column=3, padx=5, pady=5)
+entry_2 = Entry(interface, width=53)
+entry_2.place(relx=0.505, rely=0.12, anchor=N)
 entry_2.bind('<KeyRelease>', check_2)
 
 my_list_2: Listbox = Listbox(interface, height=20, width=50)
-my_list_2.grid(row=4, column=3, padx=5, pady=5)
+my_list_2.place(relx=0.5, rely=0.15, anchor=N)
 my_list_2.bind("<<ListboxSelect>>", fillout_2)
 
+scrollbar_v = Scrollbar(interface, orient=VERTICAL, command=my_list_2.yview)
+scrollbar_v.place(relx=0.601, rely=0.151, height=324)
+scrollbar_h = Scrollbar(interface, orient=HORIZONTAL, command=my_list_2.xview)
+scrollbar_h.place(relx=0.3988, rely=0.583, width=320.5)
 
 def update_3(data_3):
     my_list_3.delete(0, END)
@@ -126,16 +128,29 @@ def fillout_3(e):
     entry_3.delete(0, END)
     entry_3.insert(0, my_list_3.get(ACTIVE))
 
-entry_3 = Entry(interface, width=50)
-entry_3.grid(row=3, column=5, padx=5, pady=5)
-
-my_list_3: Listbox = Listbox(interface, height=20, width=50)
-my_list_3.grid(row=4, column=5, padx=5, pady=5)
-
-my_list_3.bind("<<ListboxSelect>>", fillout_3)
+entry_3 = Entry(interface, width=53)
+entry_3.place(relx=0.803, rely=0.12, anchor=N)
 entry_3.bind('<KeyRelease>', check_3)
 
+my_list_3: Listbox = Listbox(interface, height=20, width=50)
+my_list_3.place(relx=0.8, rely=0.15, anchor=N)
+my_list_3.bind("<<ListboxSelect>>", fillout_3)
+
+scrollbar_v = Scrollbar(interface, orient=VERTICAL, command=my_list_3.yview)
+scrollbar_v.place(relx=0.901, rely=0.151, height=324)
+scrollbar_h = Scrollbar(interface, orient=HORIZONTAL, command=my_list_3.xview)
+scrollbar_h.place(relx=0.6988, rely=0.583, width=320.5)
+
 update(alist)
+
+#output--> als waarde geselecteerd is, dan is je output het jaartal; hieronder test met knop, maar niet wat we moeten hebben. Hij moet als output de kolom langs de inputkolom geven
+#https://sparkbyexamples.com/pandas/pandas-extract-column-value-based-on-another-column/ --> antwoord?
+def click():
+    naam = Label(interface, text='Hello' + entry_3.get())
+    naam.place(relx=0.29, rely=0.8)
+
+mijn_knop = Button(interface, text='klik hier', command=click)
+mijn_knop.place(relx=0.29, rely=0.7)
 
 # OPTIE 3: op basis van fotograaf/handtekeningen/namen/personen
 # OPTIE 4: overige (zoals kartelrand, KIK-nummer bv. B0...)
