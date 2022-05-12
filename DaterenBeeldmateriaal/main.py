@@ -20,14 +20,16 @@ titel = Label(interface, text='1. BEZIENSWAARDIGHEDEN')
 titel.configure(bg="#60c1c9", fg="#000000", font=("Calibri", 20, "bold"))
 titel.place(relx=0.15, rely=0, anchor=N)
 
-#TO DO: SCROLLBAR TOEVOEGEN
-#TO DO: ZORGEN DAT TEKST LEESBAAR IS IN TYPVELD (OP TWEE REGELS PLAATSEN?)
+# TO DO: SCROLLBAR TOEVOEGEN
+# TO DO: ZORGEN DAT TEKST LEESBAAR IS IN TYPVELD (OP TWEE REGELS PLAATSEN?)
 
-#https://stackoverflow.com/questions/43922356/how-to-read-an-excel-column-into-a-list --> lijst maken van excel d.m.v. pandas
+# https://stackoverflow.com/questions/43922356/how-to-read-an-excel-column-into-a-list --> lijst maken van excel d.m.v. pandas
 file_name = "Gebeurtenissen_Lijst.xlsx"
 xl_workbook = pd.ExcelFile(file_name)
 df = xl_workbook.parse("Gebeurtenissen")
 alist = df['GEBEURTENIS (PYTHON)'].tolist()
+begindatum = df['Begindatum'].tolist()
+einddatum = df['Einddatum'].tolist()
 
 Label(
     text="Duid hier aan wat te zien is op de foto. Zoektermen moeten in het Nederlands en enkelvoud genoteerd worden.",
@@ -36,11 +38,13 @@ Label(
     font=("Calibri", 12)
 ).place(relx=0.29, rely=0.05, anchor=N)
 
+
 def update(data):
     my_list_1.delete(0, END)
 
     for entry in data:
         my_list_1.insert(END, entry)
+
 
 def check(e):
     typed = entry_1.get()
@@ -54,9 +58,11 @@ def check(e):
                 data.append(item)
     update(data)
 
+
 def fillout(e):
     entry_1.delete(0, END)
     entry_1.insert(0, my_list_1.get(ACTIVE))
+
 
 entry_1 = Entry(interface, width=53)
 entry_1.place(relx=0.205, rely=0.12, anchor=N)
@@ -71,11 +77,13 @@ scrollbar_v.place(relx=0.301, rely=0.151, height=324)
 scrollbar_h = Scrollbar(interface, orient=HORIZONTAL, command=my_list_1.xview)
 scrollbar_h.place(relx=0.0985, rely=0.583, width=320.5)
 
+
 def update_2(data_2):
     my_list_2.delete(0, END)
 
     for item in data_2:
         my_list_2.insert(END, item)
+
 
 def check_2(e):
     typed = entry_2.get()
@@ -89,9 +97,11 @@ def check_2(e):
                 data_2.append(item)
     update_2(data_2)
 
+
 def fillout_2(e):
     entry_2.delete(0, END)
     entry_2.insert(0, my_list_2.get(ACTIVE))
+
 
 entry_2 = Entry(interface, width=53)
 entry_2.place(relx=0.505, rely=0.12, anchor=N)
@@ -106,11 +116,13 @@ scrollbar_v.place(relx=0.601, rely=0.151, height=324)
 scrollbar_h = Scrollbar(interface, orient=HORIZONTAL, command=my_list_2.xview)
 scrollbar_h.place(relx=0.3988, rely=0.583, width=320.5)
 
+
 def update_3(data_3):
     my_list_3.delete(0, END)
 
     for item in data_3:
         my_list_3.insert(END, item)
+
 
 def check_3(e):
     typed = entry_3.get()
@@ -124,9 +136,11 @@ def check_3(e):
                 data_3.append(item)
     update_3(data_3)
 
+
 def fillout_3(e):
     entry_3.delete(0, END)
     entry_3.insert(0, my_list_3.get(ACTIVE))
+
 
 entry_3 = Entry(interface, width=53)
 entry_3.place(relx=0.803, rely=0.12, anchor=N)
@@ -143,18 +157,45 @@ scrollbar_h.place(relx=0.6988, rely=0.583, width=320.5)
 
 update(alist)
 
-#output--> als waarde geselecteerd is, dan is je output het jaartal; hieronder test met knop, maar niet wat we moeten hebben. Hij moet als output de kolom langs de inputkolom geven
-#https://sparkbyexamples.com/pandas/pandas-extract-column-value-based-on-another-column/ --> antwoord?
-def click():
-    naam = Label(interface, text='Hello' + entry_3.get())
-    naam.place(relx=0.29, rely=0.8)
+# output
+# --> als waarde geselecteerd is, dan is je output het jaartal; hieronder test met knop, maar niet wat we moeten hebben. Hij moet als output de kolom langs de inputkolom geven
+# https://sparkbyexamples.com/pandas/pandas-extract-column-value-based-on-another-column/ antwoord?
+# if begindatum = empty, dan 'einddatum'; beide ingevuld dan beide geven
 
-mijn_knop = Button(interface, text='klik hier', command=click)
+# output_begindatum = df.loc[df['GEBEURTENIS (PYTHON)'] == entry_1, 'Begindatum']
+
+
+#df2 = df.loc[df['GEBEURTENIS (PYTHON)'] == [df['Begindatum']]]
+
+#def output_3A(e):
+ #   output_3.delete(0, END)
+  #  output_3.insert(0, my_list_3.get(ACTIVE))
+
+#https://www.datasciencemadesimple.com/append-concatenate-rows-python-pandas-row-bind/ --> als 'GEBR' = Begindatum ...? Eerst de
+#koloms aan elkaar linken, dan moet dit mogelijk zijn?
+
+#alist = df['GEBEURTENIS (PYTHON)'].tolist()
+output = df['Begindatum'].tolist()
+
+def waarden_Excel():
+    df = df.apply(lambda alist: df['GEBEURTENIS (PYTHON)'] == df['Begindatum'])
+
+def output_begindatum():
+    if entry_1.get() == '':
+    #if entry_1.get() == 'De muntenroute is zichtbaar':
+        tekst = tk.Label(interface, text="goed")
+        tekst.place(relx=0.3, rely=0.8)
+    else:
+        tekst = tk.Label(interface, text="dit komt niet voor in de lijst")
+        tekst.place(relx=0.3, rely=0.8)
+
+
+mijn_knop = Button(interface, text='klik hier', command=output_begindatum)
 mijn_knop.place(relx=0.29, rely=0.7)
 
 # OPTIE 3: op basis van fotograaf/handtekeningen/namen/personen
 # OPTIE 4: overige (zoals kartelrand, KIK-nummer bv. B0...)
-# KIK-nummer = "opgelet! Je geeft aan dat de foto een KIK-nummer bevat. Het originele beeld is dan ook terug te vinden in de dataabase van het KIK. Kijk daar of de foto gedateerd is."
+# KIK-nummer = "opgelet! Je geeft aan dat de foto een KIK-nummer bevat. Het originele beeld is dan ook terug te vinden in de database van het KIK. Kijk daar of de foto gedateerd is."
 # Zowel één datering als overzicht + waarschuwing dat je altijd moet controleren
 
 interface.mainloop()
