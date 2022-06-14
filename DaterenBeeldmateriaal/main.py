@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import Listbox
+from tkinter import ttk
 import pandas as pd
 
 interface = tk.Tk()
@@ -20,8 +21,7 @@ titel = Label(interface, text='1. BEZIENSWAARDIGHEDEN')
 titel.configure(bg="#60c1c9", fg="#000000", font=("Calibri", 20, "bold"))
 titel.place(relx=0.15, rely=0, anchor=N)
 
-# TO DO: SCROLLBAR TOEVOEGEN
-# TO DO: ZORGEN DAT TEKST LEESBAAR IS IN TYPVELD (OP TWEE REGELS PLAATSEN?)
+#https://www.youtube.com/watch?v=H3Cjtm6NuaQ --> om één entry te maken ipv 'entry_1', 'entry_2' (om code op te kuisen tegen het einde)
 
 # https://stackoverflow.com/questions/43922356/how-to-read-an-excel-column-into-a-list --> lijst maken van excel d.m.v. pandas
 file_name = "Gebeurtenissen_Lijst.xlsx"
@@ -158,39 +158,32 @@ scrollbar_h.place(relx=0.6988, rely=0.583, width=320.5)
 update(alist)
 
 # output
-# --> als waarde geselecteerd is, dan is je output het jaartal; hieronder test met knop, maar niet wat we moeten hebben. Hij moet als output de kolom langs de inputkolom geven
-# https://sparkbyexamples.com/pandas/pandas-extract-column-value-based-on-another-column/ antwoord?
-# if begindatum = empty, dan 'einddatum'; beide ingevuld dan beide geven
+list_Startdate = df['Begindatum'].tolist()
+# read the file's Sheet1 and create dataframe with column 'MONUMENT' as index
+df = pd.read_excel(file_name, 'Gebeurtenissen', index_col='GEBEURTENIS (PYTHON)')
+# create alist from the index
+alist = df.index.tolist()
 
-# output_begindatum = df.loc[df['GEBEURTENIS (PYTHON)'] == entry_1, 'Begindatum']
-
-
-#df2 = df.loc[df['GEBEURTENIS (PYTHON)'] == [df['Begindatum']]]
-
-#def output_3A(e):
- #   output_3.delete(0, END)
-  #  output_3.insert(0, my_list_3.get(ACTIVE))
-
-#https://www.datasciencemadesimple.com/append-concatenate-rows-python-pandas-row-bind/ --> als 'GEBR' = Begindatum ...? Eerst de
-#koloms aan elkaar linken, dan moet dit mogelijk zijn?
-
-#alist = df['GEBEURTENIS (PYTHON)'].tolist()
-output = df['Begindatum'].tolist()
-
-def waarden_Excel():
-    df = df.apply(lambda alist: df['GEBEURTENIS (PYTHON)'] == df['Begindatum'])
-
-def output_begindatum():
-    if entry_1.get() == '':
-    #if entry_1.get() == 'De muntenroute is zichtbaar':
-        tekst = tk.Label(interface, text="goed")
-        tekst.place(relx=0.3, rely=0.8)
-    else:
-        tekst = tk.Label(interface, text="dit komt niet voor in de lijst")
-        tekst.place(relx=0.3, rely=0.8)
+def output():
+    # get the entry_1 value
+    monument = entry_1.get()
+    # use monument (the entry_1 value) as index for dataframe loc and 'Startdate' as the column
+    start_date = df.loc[monument, 'Begindatum']
+    end_date = df.loc[monument, 'Einddatum']
+    #einddatum = (int(end_date) + 1)
+    # set the text for the label
+    #tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date} en voor {einddatum}")
+    #tekst.place(relx=0.3, rely=0.8, width=320.5)
+    if [df['Begindatum'].notnull()] and [df['Einddatum'].notnull()]:
+        tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date} en voor {(end_date + 1)}")
+    elif [df['Einddatum'].isnull()]:
+        tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date}")
+    elif [df['Begindatum'].isnull()]:
+        tekst = tk.Label(interface, text=f"Deze foto is te dateren voor {(end_date + 1)}")
+    tekst.place(relx=0.3, rely=0.8, width=320.5)
 
 
-mijn_knop = Button(interface, text='klik hier', command=output_begindatum)
+mijn_knop = Button(interface, text='klik hier', command=output)
 mijn_knop.place(relx=0.29, rely=0.7)
 
 # OPTIE 3: op basis van fotograaf/handtekeningen/namen/personen
