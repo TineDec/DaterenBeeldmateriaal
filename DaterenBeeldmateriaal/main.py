@@ -185,7 +185,6 @@ def output():
         tekst.place(relx=0.3, rely=0.8, width=320.5)
 
 
-
 mijn_knop = Button(interface, text='klik hier', command=output)
 mijn_knop.place(relx=0.29, rely=0.7)
 
