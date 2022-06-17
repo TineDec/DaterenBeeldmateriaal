@@ -176,11 +176,14 @@ def output():
     #tekst.place(relx=0.3, rely=0.8, width=320.5)
     if [df['Begindatum'].notnull()] and [df['Einddatum'].notnull()]:
         tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date} en voor {(end_date + 1)}")
-    elif [df['Einddatum'].isnull()]:
+        tekst.place(relx=0.3, rely=0.8, width=320.5)
+    if [df['Einddatum'].isnull()]:
         tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date}")
-    elif [df['Begindatum'].isnull()]:
+        tekst.place(relx=0.3, rely=0.8, width=320.5)
+    if [df['Begindatum'].isnull()]:
         tekst = tk.Label(interface, text=f"Deze foto is te dateren voor {(end_date + 1)}")
-    tekst.place(relx=0.3, rely=0.8, width=320.5)
+        tekst.place(relx=0.3, rely=0.8, width=320.5)
+
 
 
 mijn_knop = Button(interface, text='klik hier', command=output)
