@@ -160,9 +160,9 @@ scrollbar_h.place(relx=0.6988, rely=0.583, width=320.5)
 update(alist)
 
 # output
-# IS DIT NODIG? list_Startdate = df['Begindatum'].tolist()
-# IS DIT NODIG? list_Enddate = df['Einddatum'].tolist()
-# IS DIT NODIG? list_Exact_date = df['Exacte datum'].tolist()
+# IS DIT NOG NODIG? list_Startdate = df['Begindatum'].tolist()
+# IS DIT NOG NODIG? list_Enddate = df['Einddatum'].tolist()
+# IS DIT NOG NODIG? list_Exact_date = df['Exacte datum'].tolist()
 
 # read the file's Sheet1 and create dataframe with column 'MONUMENT' as index
 df = pd.read_excel(file_name, 'Gebeurtenissen', index_col='GEBEURTENIS (PYTHON)')
@@ -175,8 +175,9 @@ alist = df.index.tolist()
 #Opgeteld['Dates2'] = dates['Einddatum'] + pd.to_timedelta(1, unit='y')
 
 #required_list?
-required_list_exactedatum_leeg = df.loc[df['Exacte datum'].isna(), 'Begindatum' or 'Einddatum'].tolist()
-required_list_begindatum_leeg = df.loc[df['Begindatum'].isna(), 'Begindatum' or 'Einddatum'].tolist()
+#required_list_exactedatum_leeg = df.loc[df['Exacte datum'].isna(), 'Begindatum', 'Einddatum'].tolist()
+#required_list_begindatum_leeg = df.loc[df['Begindatum'].isna(), 'Begindatum', 'Einddatum'].tolist()
+#test = np.where(df['Exacte datum'].isnull(), df['Begindatum'], df['Einddatum'])
 
 def output():
     # get the entry_1 value
@@ -186,42 +187,33 @@ def output():
     end_date = df.loc[monument, 'Einddatum']
     exact_date = df.loc[monument, 'Exacte datum']
 
-    if df['Exacte datum'].notnull:
-        tekst = tk.Label(interface, text=f"Deze gebeurtenis vond plaats op {(exact_date)}")
-        tekst.place(relx=0.3, rely=0.8, width=320.5)
-        if required_list_exactedatum_leeg:
-        tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date}")
-        tekst.place(relx=0.3, rely=0.8, width=320.5)
-
-
-
-
-    #if ([x for x in df['Einddatum'] if isnan(0) == False]) and ([x for x in df['Begindatum'] if isnan(0) == False]):
-     #   tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date} en voor {(end_date)}")
+    #if df['Exacte datum'].notnull:
+     #   tekst = tk.Label(interface, text=f"Deze gebeurtenis vond plaats op {(exact_date)}")
       #  tekst.place(relx=0.3, rely=0.8, width=320.5)
-    #else:
-     #   if [[df.loc[df['Begindatum'].isna()] & df.loc[df['Einddatum'].isna()], 'Begindatum'].tolist()]:
-        #if [x for x in (df['Exacte datum']) if isnan(0) == False]:
-         #   tekst = tk.Label(interface, text=f"Deze gebeurtenis vond plaats op {(exact_date)}")
-        #    tekst.place(relx=0.3, rely=0.8, width=320.5)
-       # if df['Einddatum'] == "":
-          #  tekst = tk.Label(interface, text=f"Deze foto is te dateren voor {(end_date)}")
-           # tekst.place(relx=0.3, rely=0.8, width=320.5)
-        #if [x for x in [df['Begindatum']] if isnan(0) == False]:
+    #if required_list_exactedatum_leeg:
+     #   tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date}")
+      #  tekst.place(relx=0.3, rely=0.8, width=320.5)
+
+
+    if ([x for x in df['Einddatum'] if isnan(0) == False]) and ([x for x in df['Begindatum'] if isnan(0) == False]):
+        tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date} en voor {(end_date)}")
+        tekst.place(relx=0.3, rely=0.8, width=320.5)
+    else:
+        if [[df.loc[df['Begindatum'].isna()] & df.loc[df['Einddatum'].isna()], 'Begindatum'].tolist()]:
+            #if [x for x in (df['Exacte datum']) if isnan(0) == False]:
+                tekst = tk.Label(interface, text=f"Deze gebeurtenis vond plaats op {(exact_date)}")
+                tekst.place(relx=0.3, rely=0.8, width=320.5)
+            #if df['Einddatum'] == "":
+             #   tekst = tk.Label(interface, text=f"Deze foto is te dateren voor {(end_date)}")
+              #  tekst.place(relx=0.3, rely=0.8, width=320.5)
+        if [x for x in [df['Begindatum']] if isnan(0) == False]:
     # OORSPRONKELIJK: [x for x in list_Startdate if isnan(0) == False] and [x for x in list_Enddate if isnan(0) == True]:
-          #  tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date}")
-         #   tekst.place(relx=0.3, rely=0.8, width=320.5)
-
-
+            tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date}")
+            tekst.place(relx=0.3, rely=0.8, width=320.5)
 
 
 mijn_knop = Button(interface, text='klik hier', command=output)
 mijn_knop.place(relx=0.29, rely=0.7)
-
-
-
-
-
 
 
 # OPTIE 3: op basis van fotograaf/handtekeningen/namen/personen
