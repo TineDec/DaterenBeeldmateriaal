@@ -2,9 +2,6 @@ import tkinter as tk
 from tkinter import *
 from tkinter import Listbox
 import pandas as pd
-from math import nan, isnan
-import datetime
-
 
 interface = tk.Tk()
 interface.configure(bg="#60c1c9")
@@ -26,12 +23,10 @@ titel.place(relx=0.15, rely=0, anchor=N)
 #https://www.youtube.com/watch?v=H3Cjtm6NuaQ --> om één entry te maken ipv 'entry_1', 'entry_2' (om code op te kuisen tegen het einde)
 
 # https://stackoverflow.com/questions/43922356/how-to-read-an-excel-column-into-a-list --> lijst maken van excel d.m.v. pandas
-file_name = "/Users/huynslol/PycharmProjects/DaterenBeeldmateriaal/DaterenBeeldmateriaal/Gebeurtenissen_Lijst.xlsx"
+file_name = "Gebeurtenissen_Lijst.xlsx"
 xl_workbook = pd.ExcelFile(file_name)
 df = xl_workbook.parse("Gebeurtenissen")
 alist = df['GEBEURTENIS (PYTHON)'].tolist()
-#begindatum = df['Begindatum'].tolist()
-#einddatum = df['Einddatum'].tolist()
 
 Label(
     text="Duid hier aan wat te zien is op de foto. Zoektermen moeten in het Nederlands en enkelvoud genoteerd worden.",
@@ -159,86 +154,40 @@ scrollbar_h.place(relx=0.6988, rely=0.583, width=320.5)
 
 update(alist)
 
-# output
-# IS DIT NOG NODIG? list_Startdate = df['Begindatum'].tolist()
-# IS DIT NOG NODIG? list_Enddate = df['Einddatum'].tolist()
-# IS DIT NOG NODIG? list_Exact_date = df['Exacte datum'].tolist()
-
 # read the file's Sheet1 and create dataframe with column 'MONUMENT' as index
 df = pd.read_excel(file_name, 'Gebeurtenissen', index_col='GEBEURTENIS (PYTHON)')
 # create alist from the index
 alist = df.index.tolist()
 
-#dateringen in Excel
-#dates = pd.DataFrame(df['Einddatum'])
-#dates['Einddatum'] = pd.to_datetime(dates['Einddatum'], format='%Y-%m-%d %S:%M:%H')
-#Opgeteld['Dates2'] = dates['Einddatum'] + pd.to_timedelta(1, unit='y')
-
-#required_list?
-#required_list_exactedatum_leeg = df.loc[df['Exacte datum'].isna(), 'Begindatum', 'Einddatum'].tolist()
-#required_list_begindatum_leeg = df.loc[df['Begindatum'].isna(), 'Begindatum', 'Einddatum'].tolist()
-#test = np.where(df['Exacte datum'].isnull(), df['Begindatum'], df['Einddatum'])
-
 def output():
     # get the entry_1 value
     monument = entry_1.get()
     # use monument (the entry_1 value) as index for dataframe loc and 'Startdate' as the column
-    start_date = df.loc[monument, 'Begindatum']
+    #.date() om enkel een datum te geven, zonder uur
+    start_date = df.loc[monument, 'Begindatum'].date()
     print(start_date)
-    end_date = df.loc[monument, 'Einddatum']
+    end_date = df.loc[monument, 'Einddatum'].date()
     print(end_date)
-    exact_date = df.loc[monument, 'Exacte datum']
+    exact_date = df.loc[monument, 'Exacte datum'].date()
     print(exact_date)
 
-    #if df['Exacte datum'].notnull:
-     #   tekst = tk.Label(interface, text=f"Deze gebeurtenis vond plaats op {(exact_date)}")
-      #  tekst.place(relx=0.3, rely=0.8, width=320.5)
-    #if required_list_exactedatum_leeg:
-     #   tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date}")
-      #  tekst.place(relx=0.3, rely=0.8, width=320.5)
-
     if exact_date is not pd.NaT:
-        tekst = tk.Label(interface, text=f"Deze gebeurtenis vond plaats op {(exact_date)}")
+        tekst = tk.Label(interface, text=f"Deze gebeurtenis vond plaats op {(exact_date)}.")
         tekst.place(relx=0.3, rely=0.8, width=320.5)
         print("true")
 
     elif (start_date is not pd.NaT) & (end_date is pd.NaT):
-        tekst = tk.Label(interface, text=f"na {start_date}")
+        tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date}.")
         tekst.place(relx=0.3, rely=0.8, width=320.5)
 
     elif (start_date is pd.NaT) & (end_date is not pd.NaT):
-        tekst = tk.Label(interface, text=f"voor {end_date}")
+        tekst = tk.Label(interface, text=f"Deze foto is te dateren voor {end_date}.")
         tekst.place(relx=0.3, rely=0.8, width=320.5)
 
     elif (start_date is not pd.NaT) & (end_date is not pd.NaT):
-        tekst = tk.Label(interface, text=f"tussen {start_date} en {end_date}")
+        tekst = tk.Label(interface, text=f"Deze foto is te dateren tussen {start_date} en {end_date}.")
         tekst.place(relx=0.3, rely=0.8, width=320.5)
 
-    else:
-        tekst = tk.Label(interface, text=f"ERROR")
-        tekst.place(relx=0.3, rely=0.8, width=320.5)
-
-
-#
-    # if ([x for x in df['Einddatum'] if x != "NaT"]) and ([x for x in df['Begindatum'] if  x != "NaT"]):
-    #     tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date} en voor {(end_date)}")
-    #     tekst.place(relx=0.3, rely=0.8, width=320.5)
-    #     print(tekst)
-    # else:
-    #     if [[df.loc[df['Begindatum'].isna()] & df.loc[df['Einddatum'].isna()], 'Begindatum'].tolist()]:
-    #         #if [x for x in (df['Exacte datum']) if isnan(0) == False]:
-    #             tekst = tk.Label(interface, text=f"Deze gebeurtenis vond plaats op {(exact_date)}")
-    #             tekst.place(relx=0.3, rely=0.8, width=320.5)
-    #             print(tekst)
-    #         #if df['Einddatum'] == "":
-    #          #   tekst = tk.Label(interface, text=f"Deze foto is te dateren voor {(end_date)}")
-    #           #  tekst.place(relx=0.3, rely=0.8, width=320.5)
-    #     if [x for x in [df['Begindatum']] if isnan(0) == False]:
-    # # OORSPRONKELIJK: [x for x in list_Startdate if isnan(0) == False] and [x for x in list_Enddate if isnan(0) == True]:
-    #         tekst = tk.Label(interface, text=f"Deze foto is te dateren na {start_date}")
-    #         tekst.place(relx=0.3, rely=0.8, width=320.5)
-    #         print(tekst)
-    #
 
 mijn_knop = Button(interface, text='klik hier', command=output)
 mijn_knop.place(relx=0.29, rely=0.7)
